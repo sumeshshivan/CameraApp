@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8DF0C6831B2EA3EE00FD6CE2 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DF0C67F1B2EA3EE00FD6CE2 /* AssetsLibrary.framework */; };
+		8DF0C6841B2EA3EE00FD6CE2 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DF0C6801B2EA3EE00FD6CE2 /* AVFoundation.framework */; };
+		8DF0C6851B2EA3EE00FD6CE2 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DF0C6811B2EA3EE00FD6CE2 /* CoreMedia.framework */; };
+		8DF0C6861B2EA3EE00FD6CE2 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DF0C6821B2EA3EE00FD6CE2 /* MediaPlayer.framework */; };
 		8DF266CC1B2AE42800690086 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DF266CB1B2AE42800690086 /* main.m */; };
 		8DF266CF1B2AE42800690086 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DF266CE1B2AE42800690086 /* AppDelegate.m */; };
 		8DF266D21B2AE42800690086 /* CameraApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8DF266D01B2AE42800690086 /* CameraApp.xcdatamodeld */; };
@@ -15,6 +19,8 @@
 		8DF266DA1B2AE42800690086 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8DF266D91B2AE42800690086 /* Images.xcassets */; };
 		8DF266DD1B2AE42800690086 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8DF266DB1B2AE42800690086 /* LaunchScreen.xib */; };
 		8DF266E91B2AE42800690086 /* CameraAppTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8DF266E81B2AE42800690086 /* CameraAppTests.m */; };
+		8DF2CF341B32960900CAD199 /* record-32 2.png in Resources */ = {isa = PBXBuildFile; fileRef = 8DF2CF321B32960900CAD199 /* record-32 2.png */; };
+		8DF2CF351B32960900CAD199 /* record-32.png in Resources */ = {isa = PBXBuildFile; fileRef = 8DF2CF331B32960900CAD199 /* record-32.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,6 +34,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8DF0C67F1B2EA3EE00FD6CE2 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		8DF0C6801B2EA3EE00FD6CE2 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		8DF0C6811B2EA3EE00FD6CE2 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		8DF0C6821B2EA3EE00FD6CE2 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		8DF266C61B2AE42800690086 /* CameraApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CameraApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DF266CA1B2AE42800690086 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DF266CB1B2AE42800690086 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -42,6 +52,8 @@
 		8DF266E21B2AE42800690086 /* CameraAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CameraAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DF266E71B2AE42800690086 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8DF266E81B2AE42800690086 /* CameraAppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CameraAppTests.m; sourceTree = "<group>"; };
+		8DF2CF321B32960900CAD199 /* record-32 2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "record-32 2.png"; path = "../../../Downloads/record-32 2.png"; sourceTree = "<group>"; };
+		8DF2CF331B32960900CAD199 /* record-32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "record-32.png"; path = "../../../Downloads/record-32.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,6 +61,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8DF0C6831B2EA3EE00FD6CE2 /* AssetsLibrary.framework in Frameworks */,
+				8DF0C6841B2EA3EE00FD6CE2 /* AVFoundation.framework in Frameworks */,
+				8DF0C6851B2EA3EE00FD6CE2 /* CoreMedia.framework in Frameworks */,
+				8DF0C6861B2EA3EE00FD6CE2 /* MediaPlayer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +81,10 @@
 		8DF266BD1B2AE42800690086 = {
 			isa = PBXGroup;
 			children = (
+				8DF0C67F1B2EA3EE00FD6CE2 /* AssetsLibrary.framework */,
+				8DF0C6801B2EA3EE00FD6CE2 /* AVFoundation.framework */,
+				8DF0C6811B2EA3EE00FD6CE2 /* CoreMedia.framework */,
+				8DF0C6821B2EA3EE00FD6CE2 /* MediaPlayer.framework */,
 				8DF266C81B2AE42800690086 /* CameraApp */,
 				8DF266E51B2AE42800690086 /* CameraAppTests */,
 				8DF266C71B2AE42800690086 /* Products */,
@@ -99,6 +119,8 @@
 		8DF266C91B2AE42800690086 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				8DF2CF321B32960900CAD199 /* record-32 2.png */,
+				8DF2CF331B32960900CAD199 /* record-32.png */,
 				8DF266CA1B2AE42800690086 /* Info.plist */,
 				8DF266CB1B2AE42800690086 /* main.m */,
 			);
@@ -202,7 +224,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8DF2CF351B32960900CAD199 /* record-32.png in Resources */,
 				8DF266D81B2AE42800690086 /* Main.storyboard in Resources */,
+				8DF2CF341B32960900CAD199 /* record-32 2.png in Resources */,
 				8DF266DD1B2AE42800690086 /* LaunchScreen.xib in Resources */,
 				8DF266DA1B2AE42800690086 /* Images.xcassets in Resources */,
 			);
@@ -301,7 +325,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -337,7 +361,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -349,9 +373,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer: PRATHAPAN SETHUMAPHAVAN (YBMVHB2Q9N)";
 				INFOPLIST_FILE = CameraApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "d401220a-86d8-4b94-9be9-02d042724b53";
 			};
 			name = Debug;
 		};
@@ -359,9 +385,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer: PRATHAPAN SETHUMAPHAVAN (YBMVHB2Q9N)";
 				INFOPLIST_FILE = CameraApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "d401220a-86d8-4b94-9be9-02d042724b53";
 			};
 			name = Release;
 		};
@@ -418,6 +446,7 @@
 				8DF266EE1B2AE42800690086 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8DF266EF1B2AE42800690086 /* Build configuration list for PBXNativeTarget "CameraAppTests" */ = {
 			isa = XCConfigurationList;
@@ -426,6 +455,7 @@
 				8DF266F11B2AE42800690086 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
