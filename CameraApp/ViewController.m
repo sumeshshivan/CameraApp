@@ -17,6 +17,7 @@
     AVCaptureVideoDataOutput *videoDataOutput;
     dispatch_queue_t sessionQueue;
     AVCaptureConnection *connection;
+    
 }
 @property (weak, nonatomic) IBOutlet UIImageView *outputPhoto;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *startStopButton;
@@ -26,6 +27,37 @@
 @end
 
 @implementation ViewController
+
+- (AVCaptureVideoOrientation)getAVCaptureVideoOrientationfromDeviceOrientation:(UIDeviceOrientation *)aDeviceOrientation {
+    
+    AVCaptureVideoOrientation orientation;
+    
+    switch ((int)aDeviceOrientation) {
+        case UIDeviceOrientationPortrait:
+            orientation = AVCaptureVideoOrientationPortrait;
+            break;
+        
+        case UIDeviceOrientationPortraitUpsideDown:
+            orientation = AVCaptureVideoOrientationPortraitUpsideDown;
+            break;
+            
+        case UIDeviceOrientationLandscapeLeft:
+            orientation = AVCaptureVideoOrientationLandscapeLeft;
+            break;
+            
+        case UIDeviceOrientationLandscapeRight:
+            orientation = AVCaptureVideoOrientationLandscapeRight;
+            break;
+        default:
+            orientation = AVCaptureVideoOrientationPortrait;
+            break;
+    }
+    
+    return orientation;
+}
+
+
+
 
 - (IBAction)startCamera:(id)sender {
 
@@ -101,7 +133,7 @@
     
     [rootLayer insertSublayer:_previewLayer atIndex:0];
     
-    // Make a video data output
+//    Make a video data output
 //    videoDataOutput = [[AVCaptureVideoDataOutput alloc] init];
 //    // we want BGRA, both CoreGraphics and OpenGL work well with 'BGRA'
 //    NSDictionary *rgbOutputSettings = [NSDictionary dictionaryWithObject:
@@ -124,7 +156,7 @@
     //Set landscape (if required)
     if ([connection isVideoOrientationSupported])
     {
-        AVCaptureVideoOrientation orientation = [[UIDevice currentDevice] orientation];
+        AVCaptureVideoOrientation orientation = [self getAVCaptureVideoOrientationfromDeviceOrientation:(UIDeviceOrientation *)[[UIDevice currentDevice] orientation]];
         [connection setVideoOrientation:orientation];
     }
     
@@ -138,9 +170,9 @@
 }
 
 - (void)orientationChanged:(NSNotification *)notification{
-    AVCaptureVideoOrientation orientation = [[UIDevice currentDevice] orientation];
+    AVCaptureVideoOrientation orientation = [self getAVCaptureVideoOrientationfromDeviceOrientation:(UIDeviceOrientation *)[[UIDevice currentDevice] orientation]];
     [connection setVideoOrientation:orientation];
-    _previewLayer.connection.videoOrientation = [[UIDevice currentDevice] orientation];
+    _previewLayer.connection.videoOrientation = [self getAVCaptureVideoOrientationfromDeviceOrientation:(UIDeviceOrientation *)[[UIDevice currentDevice] orientation]];
 }
 
 - (void)setStatusBarHidden:(BOOL)hidden
