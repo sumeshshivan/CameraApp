@@ -10,19 +10,22 @@
 
 @interface ViewController () {
     
-    AVCaptureSession *session;
     BOOL isRecording;
+    AVCaptureSession *session;
     AVCaptureDevice *captureDevice;
     AVCaptureDeviceInput *captureDeviceInput;
     AVCaptureVideoDataOutput *videoDataOutput;
     dispatch_queue_t sessionQueue;
     AVCaptureConnection *connection;
+    NSURL *documentsURL;
+    NSURL *outputURL;
     
 }
 @property (weak, nonatomic) IBOutlet UIImageView *outputPhoto;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *startStopButton;
 @property AVCaptureVideoPreviewLayer *previewLayer;
 @property(nonatomic, retain) AVCaptureStillImageOutput *stillImageOutput;
+@property(nonatomic, retain) AVCaptureMovieFileOutput *videoOutput;
 
 @end
 
@@ -56,48 +59,7 @@
     return orientation;
 }
 
-
-
-
-- (IBAction)startCamera:(id)sender {
-
-        // Capture a still image
-    
-         
-        [[self stillImageOutput] captureStillImageAsynchronouslyFromConnection:[[self stillImageOutput] connectionWithMediaType:AVMediaTypeVideo] completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
-            
-            if (imageDataSampleBuffer)
-            {
-                NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
-                UIImage *image = [[UIImage alloc] initWithData:imageData];
-                [_outputPhoto setImage:image];
-                
-                // Saving to Camera Roll
-                [[[ALAssetsLibrary alloc] init] writeImageToSavedPhotosAlbum:[image CGImage] orientation:(ALAssetOrientation)[image imageOrientation] completionBlock:nil];
-            }
-        }];
-    
-}
-
--(void)viewWillAppear:(BOOL)animated {
-    [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(orientationChanged:)    name:UIDeviceOrientationDidChangeNotification  object:nil];
-}
-
-- (void) viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews]; //if you want superclass's behaviour...
-    // resize your layers based on the view's new frame
-    _previewLayer.frame = self.view.bounds;
-}
-
-
-- (void)viewDidAppear:(BOOL)animated {
-    isRecording = NO;
-}
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
-
+- (void)setCaptureConfigurations {
     // initializing session for the video capture.
     session = [[AVCaptureSession alloc] init];
     NSLog(@"Capture Session Created");
@@ -127,39 +89,108 @@
     _previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:session];
     [_previewLayer setVideoGravity:AVLayerVideoGravityResizeAspectFill];
     
+    // set preview layer frame with root layer's values.
     CALayer *rootLayer = [[self view] layer];
     [rootLayer setMasksToBounds:YES];
     [_previewLayer setFrame:CGRectMake(0, 0, rootLayer.bounds.size.width, rootLayer.bounds.size.height)];
     
+    // add preview layer to root layer
     [rootLayer insertSublayer:_previewLayer atIndex:0];
+}
+
+- (NSURL*)grabFileURL:(NSString *)fileName {
     
-//    Make a video data output
-//    videoDataOutput = [[AVCaptureVideoDataOutput alloc] init];
-//    // we want BGRA, both CoreGraphics and OpenGL work well with 'BGRA'
-//    NSDictionary *rgbOutputSettings = [NSDictionary dictionaryWithObject:
-//                                       [NSNumber numberWithInt:kCMPixelFormat_32BGRA] forKey:(id)kCVPixelBufferPixelFormatTypeKey];
-//    [videoDataOutput setVideoSettings:rgbOutputSettings];
-//    [videoDataOutput setAlwaysDiscardsLateVideoFrames:YES]; // discard if the data output queue is blocked
-//    
-//    [[videoDataOutput connectionWithMediaType:AVMediaTypeVideo] setEnabled:YES];
+    // find Documents directory
+    documentsURL = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
     
+    // append a file name to it
+    documentsURL = [documentsURL URLByAppendingPathComponent:fileName];
     
+    return documentsURL;
+}
+
+// if you need the path instead
+
+- (IBAction)startCamera:(id)sender {
     
-    _stillImageOutput = [[AVCaptureStillImageOutput alloc] init];
-    NSDictionary *outputSettings = [[NSDictionary alloc] initWithObjectsAndKeys: AVVideoCodecJPEG, AVVideoCodecKey, nil];
-    [_stillImageOutput setOutputSettings:outputSettings];
+    if (!isRecording) {
+        _startStopButton.tintColor = [UIColor redColor];
+//        NSURL *movieUrl = [info objectForKey:UIImagePickerControllerMediaURL];
+        
+//        NSString *documentsPath = [documentsURL path];
+        NSString *outputPath = [[NSString alloc] initWithFormat:@"%@%@", NSTemporaryDirectory(), @"output.mov"];
+        outputURL = [[NSURL alloc] initFileURLWithPath:outputPath];
+        [_videoOutput stopRecording];
+        
+        [_videoOutput startRecordingToOutputFileURL:outputURL recordingDelegate:self];
+        
+    } else {
+        _startStopButton.tintColor = [UIColor blueColor];
+        [_videoOutput stopRecording];
+        ALAssetsLibrary *assetLibrary = [[ALAssetsLibrary alloc] init];
+        [assetLibrary writeVideoAtPathToSavedPhotosAlbum:outputURL completionBlock:^(NSURL *assetURL, NSError *error){
+            if(error == nil){
+                // Saved successfully
+                NSLog(@"success");
+                NSLog(@"%@",assetURL);
+            }
+        }];
+
+    }
     
-    [session addOutput:_stillImageOutput];
+    isRecording = !isRecording;
     
-    connection = [_stillImageOutput connectionWithMediaType:AVMediaTypeVideo];
+        // Capture a still image
+    
+//        [[self stillImageOutput] captureStillImageAsynchronouslyFromConnection:[[self stillImageOutput] connectionWithMediaType:AVMediaTypeVideo] completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
+//            
+//            if (imageDataSampleBuffer)
+//            {
+//                NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
+//                UIImage *image = [[UIImage alloc] initWithData:imageData];
+//                [_outputPhoto setImage:image];
+//                
+//                // Saving to Camera Roll
+//                [[[ALAssetsLibrary alloc] init] writeImageToSavedPhotosAlbum:[image CGImage] orientation:(ALAssetOrientation)[image imageOrientation] completionBlock:nil];
+//            }
+//        }];
+    
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+//    [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(orientationChanged:)    name:UIDeviceOrientationDidChangeNotification  object:nil];
+}
+
+- (void) viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews]; //if you want superclass's behaviour...
+    // resize your layers based on the view's new frame
+    _previewLayer.frame = self.view.bounds;
+}
+
+
+- (void)viewDidAppear:(BOOL)animated {
+    isRecording = NO;
+}
+
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view, typically from a nib.
+
+    [self setCaptureConfigurations];
     
     //Set landscape (if required)
+    _videoOutput = [[AVCaptureMovieFileOutput alloc] init];
+    [session addOutput:_videoOutput];
+    AVCaptureVideoOrientation avcaptureOrientation = AVCaptureVideoOrientationLandscapeLeft;
+    [connection setVideoOrientation:avcaptureOrientation];
     if ([connection isVideoOrientationSupported])
     {
         AVCaptureVideoOrientation orientation = [self getAVCaptureVideoOrientationfromDeviceOrientation:(UIDeviceOrientation *)[[UIDevice currentDevice] orientation]];
         [connection setVideoOrientation:orientation];
     }
-    
+    AVCaptureVideoOrientation orientation = AVCaptureVideoOrientationLandscapeLeft;
+    [connection setVideoOrientation:orientation];
     [session startRunning];
     
 }
@@ -169,15 +200,23 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)orientationChanged:(NSNotification *)notification{
-    AVCaptureVideoOrientation orientation = [self getAVCaptureVideoOrientationfromDeviceOrientation:(UIDeviceOrientation *)[[UIDevice currentDevice] orientation]];
-    [connection setVideoOrientation:orientation];
-    _previewLayer.connection.videoOrientation = [self getAVCaptureVideoOrientationfromDeviceOrientation:(UIDeviceOrientation *)[[UIDevice currentDevice] orientation]];
-}
+//- (void)orientationChanged:(NSNotification *)notification{
+//    AVCaptureVideoOrientation orientation = [self getAVCaptureVideoOrientationfromDeviceOrientation:(UIDeviceOrientation *)[[UIDevice currentDevice] orientation]];
+//    [connection setVideoOrientation:orientation];
+//    _previewLayer.connection.videoOrientation = [self getAVCaptureVideoOrientationfromDeviceOrientation:(UIDeviceOrientation *)[[UIDevice currentDevice] orientation]];
+//}
 
 - (void)setStatusBarHidden:(BOOL)hidden
              withAnimation:(UIStatusBarAnimation)animation {
     YES;
 }
 
+
+-(void)captureOutput:(AVCaptureFileOutput *)captureOutput didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL fromConnections:(NSArray *)connections error:(NSError *)error {
+    
+}
+
+-(void)captureOutput:(AVCaptureFileOutput *)captureOutput didStartRecordingToOutputFileAtURL:(NSURL *)fileURL fromConnections:(NSArray *)connections {
+    
+}
 @end
