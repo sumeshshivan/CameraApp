@@ -23,14 +23,15 @@
 }
 @property (weak, nonatomic) IBOutlet UIImageView *outputPhoto;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *startStopButton;
-@property AVCaptureVideoPreviewLayer *previewLayer;
-@property(nonatomic, retain) AVCaptureStillImageOutput *stillImageOutput;
-@property(nonatomic, retain) AVCaptureMovieFileOutput *videoOutput;
+@property (nonatomic, retain) AVCaptureVideoPreviewLayer *previewLayer;
+@property (nonatomic, retain) AVCaptureStillImageOutput *stillImageOutput;
+@property (nonatomic, retain) AVCaptureMovieFileOutput *videoOutput;
 
 @end
 
 @implementation ViewController
 
+// Returns Capture Video Orientation from given Device Orientation
 - (AVCaptureVideoOrientation)getAVCaptureVideoOrientationfromDeviceOrientation:(UIDeviceOrientation *)aDeviceOrientation {
     
     AVCaptureVideoOrientation orientation;
@@ -59,6 +60,8 @@
     return orientation;
 }
 
+
+// Sets up initial configurations for a Capture session
 - (void)setCaptureConfigurations {
     // initializing session for the video capture.
     session = [[AVCaptureSession alloc] init];
@@ -98,6 +101,8 @@
     [rootLayer insertSublayer:_previewLayer atIndex:0];
 }
 
+
+
 - (NSURL*)grabFileURL:(NSString *)fileName {
     
     // find Documents directory
@@ -109,17 +114,15 @@
     return documentsURL;
 }
 
-// if you need the path instead
 
 - (IBAction)startCamera:(id)sender {
     
     if (!isRecording) {
         _startStopButton.tintColor = [UIColor redColor];
-//        NSURL *movieUrl = [info objectForKey:UIImagePickerControllerMediaURL];
-        
-//        NSString *documentsPath = [documentsURL path];
-        NSString *outputPath = [[NSString alloc] initWithFormat:@"%@%@", NSTemporaryDirectory(), @"output.mov"];
-        outputURL = [[NSURL alloc] initFileURLWithPath:outputPath];
+
+//        NSString *outputPath = [[NSString alloc] initWithFormat:@"%@%@", NSTemporaryDirectory(), @"output.mov"];
+//        outputURL = [[NSURL alloc] initFileURLWithPath:outputPath];
+        outputURL = [self grabFileURL:@"output.mov"];
         [_videoOutput stopRecording];
         
         [_videoOutput startRecordingToOutputFileURL:outputURL recordingDelegate:self];
