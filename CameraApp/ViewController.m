@@ -14,8 +14,6 @@
     AVCaptureSession *session;
     AVCaptureDevice *captureDevice;
     AVCaptureDeviceInput *captureDeviceInput;
-    AVCaptureVideoDataOutput *videoDataOutput;
-    dispatch_queue_t sessionQueue;
     AVCaptureConnection *connection;
     NSURL *documentsURL;
     NSURL *outputURL;
@@ -63,6 +61,7 @@
 
 // Sets up initial configurations for a Capture session
 - (void)setCaptureConfigurations {
+    
     // initializing session for the video capture.
     session = [[AVCaptureSession alloc] init];
     NSLog(@"Capture Session Created");
@@ -114,22 +113,29 @@
     return documentsURL;
 }
 
-
 - (IBAction)startCamera:(id)sender {
     
     if (!isRecording) {
+        
+        // change the start stop button color to red
         _startStopButton.tintColor = [UIColor redColor];
 
 //        NSString *outputPath = [[NSString alloc] initWithFormat:@"%@%@", NSTemporaryDirectory(), @"output.mov"];
 //        outputURL = [[NSURL alloc] initFileURLWithPath:outputPath];
         outputURL = [self grabFileURL:@"output.mov"];
-        [_videoOutput stopRecording];
         
+        // Stop if already recording and start new recording
+        [_videoOutput stopRecording];
         [_videoOutput startRecordingToOutputFileURL:outputURL recordingDelegate:self];
         
     } else {
+        
+        // change the start stop button color to blue
         _startStopButton.tintColor = [UIColor blueColor];
+        
         [_videoOutput stopRecording];
+        
+        // Copy the video file to the Photos Album
         ALAssetsLibrary *assetLibrary = [[ALAssetsLibrary alloc] init];
         [assetLibrary writeVideoAtPathToSavedPhotosAlbum:outputURL completionBlock:^(NSURL *assetURL, NSError *error){
             if(error == nil){
@@ -142,26 +148,6 @@
     }
     
     isRecording = !isRecording;
-    
-        // Capture a still image
-    
-//        [[self stillImageOutput] captureStillImageAsynchronouslyFromConnection:[[self stillImageOutput] connectionWithMediaType:AVMediaTypeVideo] completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
-//            
-//            if (imageDataSampleBuffer)
-//            {
-//                NSData *imageData = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
-//                UIImage *image = [[UIImage alloc] initWithData:imageData];
-//                [_outputPhoto setImage:image];
-//                
-//                // Saving to Camera Roll
-//                [[[ALAssetsLibrary alloc] init] writeImageToSavedPhotosAlbum:[image CGImage] orientation:(ALAssetOrientation)[image imageOrientation] completionBlock:nil];
-//            }
-//        }];
-    
-}
-
--(void)viewWillAppear:(BOOL)animated {
-//    [[NSNotificationCenter defaultCenter] addObserver:self  selector:@selector(orientationChanged:)    name:UIDeviceOrientationDidChangeNotification  object:nil];
 }
 
 - (void) viewDidLayoutSubviews {
@@ -202,18 +188,6 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-//- (void)orientationChanged:(NSNotification *)notification{
-//    AVCaptureVideoOrientation orientation = [self getAVCaptureVideoOrientationfromDeviceOrientation:(UIDeviceOrientation *)[[UIDevice currentDevice] orientation]];
-//    [connection setVideoOrientation:orientation];
-//    _previewLayer.connection.videoOrientation = [self getAVCaptureVideoOrientationfromDeviceOrientation:(UIDeviceOrientation *)[[UIDevice currentDevice] orientation]];
-//}
-
-- (void)setStatusBarHidden:(BOOL)hidden
-             withAnimation:(UIStatusBarAnimation)animation {
-    YES;
-}
-
 
 -(void)captureOutput:(AVCaptureFileOutput *)captureOutput didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL fromConnections:(NSArray *)connections error:(NSError *)error {
     
